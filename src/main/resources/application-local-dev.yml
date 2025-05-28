@@ -1,0 +1,10 @@
+# Local development specific configurations
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+
+app:
+  mandatory-property: "local-dev" # This is a mandatory property
