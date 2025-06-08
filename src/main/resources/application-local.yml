@@ -1,0 +1,12 @@
+# Local development specific configurations
+server:
+  port: 10001
+
+logging:
+  level:
+    root: INFO
+
+app:
+  mandatory-property: "local-dev" # This is a mandatory property
+  ingest-service:
+    storage: file # file or cloud
