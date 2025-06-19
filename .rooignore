@@ -1,0 +1,15 @@
+### Docs or logs  ###
+*.log
+
+### Private info  ###
+config/secrets.json
+
+
+### VS Code ###
+.vscode/
+
+### JAVA ###
+target/
+.mvn/wrapper/maven-wrapper.jar
+**/src/main/**/target/
+**/src/test/**/target/

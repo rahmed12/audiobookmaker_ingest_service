@@ -70,11 +70,32 @@ public class AppProperties {
         }
 
         for (Map.Entry<String, String> entry : finalProperties.entrySet()) {
+            String propertyName = entry.getKey();
+            String propertyValue = entry.getValue();
+            String maskedValue = isSensitiveProperty(propertyName) ? "****" : propertyValue;
+
             logger.info("Property:{} | Value: {} | Source(s): {}",
-                    entry.getKey(), entry.getValue(), origins.get(entry.getKey()));
+                    propertyName, maskedValue, origins.get(propertyName));
         }
 
         logger.info("==== End of Property Listing ====");
     }
 
+    /**
+     * Checks if a property name is potentially sensitive.
+     * This is a basic check and may need to be extended based on specific needs.
+     *
+     * @param propertyName The name of the property.
+     * @return true if the property name is considered sensitive, false otherwise.
+     */
+    private boolean isSensitiveProperty(String propertyName) {
+        if (propertyName == null) {
+            return false;
+        }
+        String lowerCasePropertyName = propertyName.toLowerCase();
+        return lowerCasePropertyName.contains("password") ||
+               lowerCasePropertyName.contains("secret") ||
+               lowerCasePropertyName.contains("key") ||
+               lowerCasePropertyName.contains("token");
+    }
 }
