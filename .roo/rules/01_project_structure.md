@@ -18,7 +18,7 @@ You are a senior Java Spring Boot architect. Given the need to design a clean an
 - Contains business logic in `@Service` classes
 - May depend on repositories or utility classes
 - Must not call or depend on controllers
-- `service` cointains the interface of the impl classes if it uses an interface
+- `service/` cointains the interface of the impl classes if it uses an interface
 
 
 ### 4. `repository/`
