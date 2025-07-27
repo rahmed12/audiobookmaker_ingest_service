@@ -19,6 +19,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public Mono<ResponseEntity<CustomeErrorResponse>> handleNotFound(ResourceNotFoundException ex) {
+
+        // Log the full error detail
+        logger.error("Resource Not Found Exception error: {} --> Stack trace: {} ",
+        ex.getMessage(), ex.getStackTrace());
         
         return Mono.just(
             ResponseEntity
@@ -29,6 +33,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FileUploadException.class)
     public Mono<ResponseEntity<CustomeErrorResponse>> fileUploadError(FileUploadException fex) {
+
+        // Log the full error detail
+        logger.error("File Upload Exception error: {} --> Stack trace: {} ", 
+        fex.getMessage(), fex.getStackTrace());
+
         return Mono.just(
             ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -36,20 +45,12 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(Exception.class)
-    public Mono<ResponseEntity<CustomeErrorResponse>> handlyAny(Exception ex) {
-        return Mono.just(
-            ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new CustomeErrorResponse("Interal server error: " + ex.getMessage()))
-        );
-    }
-
     @ExceptionHandler(WebExchangeBindException.class)
     public Mono<ResponseEntity<CustomeErrorResponse>> handleValidation(WebExchangeBindException ex) {
         
         // Log the full validation detail
-        logger.error("Validation failed: {}", ex.getAllErrors());
+        logger.error("Validation failed: {} --> Stack trace: {} ",
+        ex.getAllErrors(), ex.getStackTrace());
 
         // Extract first validation message
         String message = ex.getFieldErrors().stream()
@@ -61,5 +62,21 @@ public class GlobalExceptionHandler {
             .badRequest()
             .body(new CustomeErrorResponse(message)));
     }
+
+    @ExceptionHandler(Exception.class)
+    public Mono<ResponseEntity<CustomeErrorResponse>> handlyAny(Exception ex) {
+
+        // Log the full error detail
+        logger.error("Exception error: {} --> Stack trace: {} ",
+        ex.getMessage(), ex.getStackTrace());
+
+        return Mono.just(
+            ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new CustomeErrorResponse("Interal server error: " + ex.getMessage()))
+        );
+    }
+
+    
 
 }
