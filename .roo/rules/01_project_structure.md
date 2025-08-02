@@ -18,12 +18,12 @@ You are a senior Java Spring Boot architect. Given the need to design a clean an
 - Contains business logic in `@Service` classes
 - May depend on repositories or utility classes
 - Must not call or depend on controllers
-- `service/` cointains the interface of the impl classes if it uses an interface
+- `service/` cointains the interface of the impl classes and the name must start with I and the impl classe name: example IMyClassName
 
 
 ### 4. `repository/`
-- Contains interfaces that extend `JpaRepository` or `CrudRepository`
-- Used to interact with JPA entities
+- Define interfaces that handle data access
+- Contains Spring Data interfaces that abstract database operations
 
 ### 5. `model/`
 - Contains JPA `@Entity` classes
