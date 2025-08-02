@@ -1,3 +1,8 @@
+-- Table: books
+-- Purpose: Represents an uploaded PDF or TXT file by a user. Tracks metadata such as title, upload path, and user ownership.
+-- Each book will be parsed into sentences, which will be stored in the `sentences` table and linked via book_id.
+
+
 CREATE TABLE IF NOT EXISTS books (
   id UUID PRIMARY KEY,
   user_id UUID NOT NULL,
