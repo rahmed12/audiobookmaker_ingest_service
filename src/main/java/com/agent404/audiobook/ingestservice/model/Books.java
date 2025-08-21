@@ -1,51 +1,41 @@
 package com.agent404.audiobook.ingestservice.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
-import jakarta.validation.constraints.NotBlank;
+
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "books")
-public class Books {
+public class Books implements Persistable<UUID>{
 
     @Id
     private UUID id;
-
-    @Column("user_id")
-    @NotBlank
-    private UUID userId;
-
-    @Column("title")
+    private UUID user_id;
     private String title;
+    private String raw_uri;
+    private String text_uri;
+    private String text_sha256;
+    private Integer text_length;
+    private BookStatus status;
+    private LocalDateTime text_ready_at;
+    private LocalDateTime segments_ready_at;
+    @CreatedDate
+    private LocalDateTime created_at;
+    @LastModifiedDate
+    private LocalDateTime updated_at;
 
-    @Column("original_filename")
-    private String originalFilename;
+    @Transient  // don't map this field to a column
+    private boolean isNew;                 // not a column in table
 
-    @Column("language_code")
-    private String languageCode;
-
-    @Column("priority_level")
-    private String priorityLevel;
-
-    @Column("upload_path")
-    private String uploadPath;
-
-    @Column("plain_text_path")
-    private String plainTextPath;
-
-    @Column("created_at")
-    private LocalDateTime createdAt;
-
-    @Column("deleted_at")
-    private LocalDateTime deletedAt;
+    @Override public boolean isNew() { return this.isNew || id == null; }
+    public void markNew(boolean isNew) { this.isNew = isNew; }
 }

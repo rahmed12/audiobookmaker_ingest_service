@@ -20,7 +20,7 @@ import com.agent404.audiobook.ingestservice.exception.FileUploadException;
 import com.agent404.audiobook.ingestservice.util.FileTypeValidator;
 
 import java.security.Principal;
-import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/ingest")
@@ -44,12 +44,12 @@ public class FileUploadController {
             filePart.headers().getContentType());
         }
 
-        
-
+    
         // TODO: remember to add security back to make principal work
         String uploader = (principal != null) ? principal.getName() : "anonymous";
+        MediaType mediaType = filePart.headers().getContentType();
 
-        return fileUploadService.handleUpload(filePart, uploader, fileUploadRequest)
+        return fileUploadService.handleUpload(filePart, mediaType, uploader, fileUploadRequest)
             .map(uploadId -> new FileUploadResponse(uploadId));
     }
 }

@@ -1,14 +1,15 @@
 package com.agent404.audiobook.ingestservice.service.impl;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.agent404.audiobook.ingestservice.service.IUserValidationService;
+import com.agent404.audiobook.ingestservice.service.IUserValidationClient;
+
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 
 @RequiredArgsConstructor
-public class UserValidationServiceImpl implements IUserValidationService{
+public class UserValidationClientImpl implements IUserValidationClient{
 
     private final WebClient userServiceWebClient;
 

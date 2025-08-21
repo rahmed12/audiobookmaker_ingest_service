@@ -12,15 +12,15 @@ public class WebClientConfig {
         return WebClient.builder();
     }
 
-    @Bean(name = "userServiceWebClient")
-    public WebClient userServiceWebClient(WebClient.Builder webClientBuilder) {
+    @Bean(name = "userWebClient")
+    public WebClient userWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
             .baseUrl("http://localhost:8080")
             .build();
     }
 
-    @Bean(name = "LlmServiceWebClient")
-    public WebClient LlmServiceWebClient(WebClient.Builder webClientBuilder) {
+    @Bean(name = "NlpLlmWebClient")
+    public WebClient LlmWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
             .baseUrl("http://localhost:8082")
             .build();
