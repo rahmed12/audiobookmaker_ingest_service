@@ -1,0 +1,28 @@
+# Cloud specific configurations
+server:
+  port: 8081
+
+logging:
+  level:
+    root: INFO
+
+app:
+  mandatory-property: "default" # This is a mandatory property
+  ingest-service:
+    storage: cloud # file or cloud
+    queue: cloud
+    fileupload:
+      timeout: 30 # in seconds
+
+spring:
+  application:
+    name: ingestservice
+  r2dbc:
+    url: r2dbc:postgresql://host.docker.internal:${DB_PORT_INGEST}/audiobook_ingestdb
+    username: postgres
+    password: ${DB_PASSWORD_INGEST}
+  flyway:
+    url: jdbc:postgresql://host.docker.internal:${DB_PORT_INGEST}/audiobook_ingestdb
+    locations: classpath:db/postgres/migration
+  
+# Add cloud-specific configurations here (e.g., database URLs, Kafka brokers, S3 bucket names)
