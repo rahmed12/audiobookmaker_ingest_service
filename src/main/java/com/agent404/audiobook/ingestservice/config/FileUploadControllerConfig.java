@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.agent404.audiobook.ingestservice.repository.BooksRepository;
+import com.agent404.audiobook.ingestservice.service.IAnnotationClient;
 import com.agent404.audiobook.ingestservice.service.IFileStorageService;
 import com.agent404.audiobook.ingestservice.service.IFileUploadService;
 import com.agent404.audiobook.ingestservice.service.ITextExtractionService;
@@ -48,10 +49,12 @@ public class FileUploadControllerConfig {
         @Value("${app.ingestService.fileupload.paths.rawPattern:books/%s/raw/%s}") String rawFilePatternPath,
         @Value("${app.ingestService.fileupload.paths.textPattern:books/%s/text/%s}") String textFilePatternPath,
         BooksRepository bookRepository,
-        ITextExtractionService textExtractionService 
+        ITextExtractionService textExtractionService,
+        IAnnotationClient annotationClient 
     ) {
         return new FileUploadServiceImpl(storageService, timeoutInSeconds, userValidationServiceImpl, rawFilePatternPath, textFilePatternPath,
-        bookRepository, textExtractionService);
+        bookRepository, textExtractionService,
+        annotationClient);
 
     }
 

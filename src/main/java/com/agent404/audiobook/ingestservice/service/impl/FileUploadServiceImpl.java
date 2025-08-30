@@ -23,6 +23,7 @@ import com.agent404.audiobook.ingestservice.exception.ResourceNotFoundException;
 import com.agent404.audiobook.ingestservice.model.BookStatus;
 import com.agent404.audiobook.ingestservice.model.Books;
 import com.agent404.audiobook.ingestservice.repository.BooksRepository;
+import com.agent404.audiobook.ingestservice.service.IAnnotationClient;
 import com.agent404.audiobook.ingestservice.service.IFileStorageService;
 import com.agent404.audiobook.ingestservice.service.IFileUploadService;
 import com.agent404.audiobook.ingestservice.service.ITextExtractionService;
@@ -47,6 +48,7 @@ public class FileUploadServiceImpl implements IFileUploadService{
     private final String textFilePatternPath;
     private final BooksRepository booksRepository;
     private final ITextExtractionService textExtractionService;
+    private final IAnnotationClient annotationClient;
 
 
     @Override
@@ -80,8 +82,16 @@ public class FileUploadServiceImpl implements IFileUploadService{
         .flatMap(c -> extractTxtToTemp(mediaType, c)) // ctx.tempTxt
         .flatMap(c -> storeTxt(c))                    // ctx.textUri
         .flatMap(c -> computeShaAndLength(c))         // ctx.textSha256, ctx.textLength
-        .flatMap(c -> insertBookRow(c))               // insert book row
-        .map(saved -> saved.getId().toString())
+        .flatMap(c -> insertBookRow(c))               // returns Mono<Books>
+        .flatMap(saved -> {
+            return annotationClient.requestExtraction(saved.getId())
+            // don’t fail upload if annotation service is down
+            .onErrorResume(e -> {
+                logger.warn("Failed to send to annotation Service for {}: {}", saved.getId().toString(), e.toString());
+                return Mono.empty();
+            })
+            .thenReturn(saved.getId().toString());
+        })
         .timeout(Duration.ofSeconds(timeoutInSecs))
         .doOnError(e -> logger.error(
             "Upload failed for userId={} file={} bookId={}",

@@ -25,4 +25,11 @@ public class WebClientConfig {
             .baseUrl("http://localhost:8082")
             .build();
     }
+
+    @Bean(name = "AnnotationClient")
+    public WebClient AnnotationWebClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder
+            .baseUrl("http://localhost:8083")
+            .build();
+    }
 }

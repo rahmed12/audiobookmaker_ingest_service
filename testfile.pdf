@@ -1,0 +1,21 @@
+Typical request flow (in English)
+
+Client POST /ingest/upload with metadata + file.
+
+Service validates the user.
+
+Writes the uploaded file to a temp location.
+
+Copies RAW to storage, remembers rawUri.
+
+Extracts plain text to another temp file.
+
+Copies TXT to storage, remembers textUri.
+
+Reads TXT, computes SHA-256 + character count.
+
+Inserts book row with status TEXT_READY.
+
+Returns the bookId (as string).
+
+If anything fails, you log + wrap the error; temp files stay on disk for now.
