@@ -44,7 +44,7 @@ public class FileUploadControllerConfig {
     @Bean
     public IFileUploadService allocateFileUploadService(
         IFileStorageService storageService,
-        @Value("${app.ingestService.fileupload.timeout:30}") int timeoutInSeconds,
+        @Value("${app.ingestservice.fileupload.timeout:30}") int timeoutInSeconds,
         IUserValidationClient userValidationServiceImpl,
         @Value("${app.ingestService.fileupload.paths.rawPattern:books/%s/raw/%s}") String rawFilePatternPath,
         @Value("${app.ingestService.fileupload.paths.textPattern:books/%s/text/%s}") String textFilePatternPath,
